@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+/* ==========================================
+   DALAT LOOKBOOK — Design System
+   Tone: Warm, vintage, romantic Đà Lạt
+   ========================================== */
+
+@theme inline {
+  /* --- Color Palette --- */
+  --color-primary: #8B6F47;
+  --color-primary-light: #C4A882;
+  --color-primary-dark: #6B5435;
+  --color-accent: #D4A574;
+  --color-accent-light: #E8C9A0;
+  --color-rose: #E8B4B8;
+  --color-rose-light: #F5D5D8;
+  --color-sage: #A8B5A0;
+  --color-sage-light: #C8D4C2;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border-color);
+  --color-muted: var(--muted);
+
+  /* --- Font Family --- */
+  --font-sans: "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
+
+  /* --- Animations --- */
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.5s ease-out;
+  --animate-slide-down: slide-down 0.3s ease-out;
+  --animate-scale-in: scale-in 0.3s ease-out;
+  --animate-float: float 3s ease-in-out infinite;
+}
+
+:root {
+  --background: #FBF8F4;
+  --foreground: #2C2420;
+  --surface: #F5EFE7;
+  --surface-hover: #EDE5D9;
+  --border-color: #E0D5C7;
+  --muted: #8C7E73;
+}
+
+/* ==========================================
+   KEYFRAMES
+   ========================================== */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ==========================================
+   BASE STYLES
+   ========================================== */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
+}
+
+/* ==========================================
+   SCROLLBAR
+   ========================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* ==========================================
+   COMPONENT STYLES
+   ========================================== */
+
+/* Glass Card Effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(139, 111, 71, 0.08);
+}
+
+/* Product Card */
+.product-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(139, 111, 71, 0.15);
+}
+
+.product-card .product-image {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+/* Style Badge */
+.style-badge {
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-accent));
+  color: white;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* Hero Gradient */
+.hero-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(139, 111, 71, 0.85) 0%,
+    rgba(212, 165, 116, 0.75) 50%,
+    rgba(232, 180, 184, 0.65) 100%
+  );
+}
+
+/* Section Divider */
+.section-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 2px;
+}
+
+/* Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: white;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(139, 111, 71, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 111, 71, 0.4);
+}
+
+.btn-outline {
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  padding: 10px 26px;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* Input Styles */
+.input-field {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 12px;
+  background: white;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  color: var(--foreground);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
+}
+
+.input-field::placeholder {
+  color: var(--muted);
+}
+
+/* Loading Skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 25%,
+    var(--surface-hover) 50%,
+    var(--surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* Category Card */
+.category-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(44, 36, 32, 0.7) 0%,
+    rgba(44, 36, 32, 0.2) 50%,
+    transparent 100%
+  );
+  transition: opacity 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(139, 111, 71, 0.2);
+}
+
+.category-card:hover::after {
+  background: linear-gradient(
+    to top,
+    rgba(139, 111, 71, 0.8) 0%,
+    rgba(139, 111, 71, 0.3) 50%,
+    transparent 100%
+  );
+}
+
+/* Toast / Notification */
+.toast-success {
+  background: linear-gradient(135deg, #A8B5A0, #8FA588);
+  color: white;
+}
+
+.toast-error {
+  background: linear-gradient(135deg, #E8B4B8, #D4908A);
+  color: white;
+}

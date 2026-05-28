@@ -1,0 +1,56 @@
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Build output
+.next
+out
+build
+
+# Version control
+.git
+.gitignore
+
+# Environment files
+# Keep .env and .env.local to allow build-time variables (NEXT_PUBLIC_*)
+# to be embedded into the static bundle.
+.env.production
+
+# IDE & OS
+.vscode
+.idea
+.DS_Store
+*.swp
+*.swo
+
+# Dev/debug scripts (not needed at runtime)
+add-policy.js
+check-enum.js
+check-orders-cols.js
+check-rls.js
+check-schema.js
+create-banners.js
+fix-delivery.js
+fix-deposit.js
+fix-orders.js
+fix-rental-days.js
+fix-storage.js
+reload.js
+seed-database.js
+setup-chat.js
+setup-extension.js
+setup-reviews.js
+setup-storage.js
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Misc
+README.md
+AGENTS.md
+CLAUDE.md
+*.tsbuildinfo
+next-env.d.ts
+tsconfig.tsbuildinfo
