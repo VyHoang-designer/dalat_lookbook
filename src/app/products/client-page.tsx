@@ -250,15 +250,15 @@ export default function ProductsClient({
                         </Link>
                         <RentButton
                           productId={product.id}
-                          disabled={product.status === \"rented\"}
+                          disabled={product.status === "rented"}
                           className={`flex-1 text-center text-xs font-semibold py-2 rounded-lg transition-colors ${
-                            product.status === \"rented\"
-                              ? \"bg-gray-200 text-gray-500 cursor-not-allowed\"
-                              : \"bg-primary text-white hover:bg-primary-dark\"
+                            product.status === "rented"
+                              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                              : "bg-primary text-white hover:bg-primary-dark"
                           }`}
                         >
                           {product.status === "rented" ? "Hết đồ" : "Đặt thuê"}
-                        </Link>
+                        </RentButton>
                       </div>
                     </div>
                   </div>
