@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { LogIn, Mail, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { signIn } from "@/lib/auth/actions";
 import { toast } from "sonner";
+import { useAuth } from "@/components/providers/auth-provider";
 
 export default function LoginForm({
   redirectTo,
@@ -18,6 +19,7 @@ export default function LoginForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { refreshUser } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,6 +36,9 @@ export default function LoginForm({
     }
 
     toast.success("Đăng nhập thành công!");
+
+    // Cập nhật lại state của AuthProvider ngay lập tức
+    await refreshUser();
 
     // Redirect theo role
     if (result.role === "admin") {
