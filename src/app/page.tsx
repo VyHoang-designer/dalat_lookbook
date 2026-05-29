@@ -23,6 +23,7 @@ import { getBanners } from "@/lib/db/banners";
 import { BannerCarousel } from "@/components/ui/banner-carousel";
 import CustomerReviews from "@/components/home/customer-reviews";
 import FeaturesSection from "@/components/home/features-section";
+import { RentButton } from "@/components/ui/rent-button";
 
 /* ==========================================
    STATIC DATA
@@ -196,12 +197,12 @@ export default async function HomePage() {
                     >
                       Xem chi tiết
                     </Link>
-                    <Link
-                      href={`/rental/${product.id}`}
+                    <RentButton
+                      productId={product.id}
                       className="flex-1 text-center text-xs font-semibold py-2 rounded-lg bg-primary text-white hover:bg-primary-dark transition-colors"
                     >
                       Đặt thuê
-                    </Link>
+                    </RentButton>
                   </div>
                 </div>
               </div>

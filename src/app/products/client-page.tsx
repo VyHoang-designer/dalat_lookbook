@@ -6,6 +6,7 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Search, CheckCircle, ChevronRight, X } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
+import { RentButton } from "@/components/ui/rent-button";
 import { Product } from "@/lib/db/products";
 
 interface Category {
@@ -247,12 +248,13 @@ export default function ProductsClient({
                         >
                           Xem chi tiết
                         </Link>
-                        <Link
-                          href={`/rental/${product.id}`}
+                        <RentButton
+                          productId={product.id}
+                          disabled={product.status === \"rented\"}
                           className={`flex-1 text-center text-xs font-semibold py-2 rounded-lg transition-colors ${
-                            product.status === "rented"
-                              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                              : "bg-primary text-white hover:bg-primary-dark"
+                            product.status === \"rented\"
+                              ? \"bg-gray-200 text-gray-500 cursor-not-allowed\"
+                              : \"bg-primary text-white hover:bg-primary-dark\"
                           }`}
                         >
                           {product.status === "rented" ? "Hết đồ" : "Đặt thuê"}

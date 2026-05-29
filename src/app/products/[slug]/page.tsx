@@ -14,6 +14,7 @@ import {
 import { formatPrice } from "@/lib/utils";
 import { getProductBySlug, getProducts } from "@/lib/db/products";
 import ProductDetailClient from "./client-page";
+import { RentButton } from "@/components/ui/rent-button";
 
 const FAQ_ITEMS = [
   {
@@ -135,15 +136,16 @@ export default async function ProductDetailPage({
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3 mb-5">
-              <Link
-                href={`/rental/${product.id}`}
+              <RentButton
+                productId={product.id}
+                disabled={product.status === "rented"}
                 className={`btn-primary flex-1 flex items-center justify-center gap-2 text-center text-base ${
                   product.status === "rented" ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
                 }`}
               >
                 <ShoppingBag className="w-5 h-5" />
                 {product.status === "rented" ? "Hết đồ" : "Đặt thuê ngay"}
-              </Link>
+              </RentButton>
               <button className="btn-outline flex items-center justify-center gap-2">
                 <Heart className="w-4 h-4" />
                 Yêu thích
@@ -231,9 +233,9 @@ export default async function ProductDetailPage({
                       <Link href={`/products/${p.slug}`} className="flex-1 text-center text-[11px] font-medium py-1.5 rounded-lg border border-border text-foreground/70 hover:border-primary hover:text-primary transition-colors">
                         Chi tiết
                       </Link>
-                      <Link href={`/rental/${p.id}`} className="flex-1 text-center text-[11px] font-semibold py-1.5 rounded-lg bg-primary text-white hover:bg-primary-dark transition-colors">
+                      <RentButton productId={p.id} disabled={p.status === "rented"} className="flex-1 text-center text-[11px] font-semibold py-1.5 rounded-lg bg-primary text-white hover:bg-primary-dark transition-colors">
                         Đặt thuê
-                      </Link>
+                      </RentButton>
                     </div>
                   </div>
                 </div>
