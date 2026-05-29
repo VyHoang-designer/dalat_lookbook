@@ -25,6 +25,7 @@ import {
 import { formatPrice } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import Image from "next/image";
+import { useAuth } from "@/components/providers/auth-provider";
 
 // ===== CẤU HÌNH NGÂN HÀNG =====
 const BANK_CONFIG = {
@@ -48,6 +49,7 @@ interface RentalFormProps {
 export default function RentalForm({ product }: RentalFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const { user, loading } = useAuth();
 
   const [deliveryMethod, setDeliveryMethod] = useState<"pickup" | "delivery">("pickup");
   const [deliveryDate, setDeliveryDate] = useState("");
@@ -176,6 +178,37 @@ export default function RentalForm({ product }: RentalFormProps) {
 
   return (
     <>
+      {/* Modal Yêu cầu đăng nhập */}
+      {!loading && !user && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95 fade-in duration-200">
+            <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <User className="w-8 h-8" />
+            </div>
+            <h3 className="text-xl font-bold text-center text-[#3E2723] mb-2">
+              Yêu cầu đăng nhập
+            </h3>
+            <p className="text-[#6D5D55] text-center text-sm mb-6 leading-relaxed">
+              Bạn cần đăng nhập tài khoản trước khi thực hiện thuê đồ. Quá trình này giúp chúng tôi bảo vệ quyền lợi của bạn tốt hơn.
+            </p>
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={() => router.push(`/login?redirect=/rental/${product.id}`)}
+                className="w-full bg-[#8B6F47] hover:bg-[#6D5433] text-white py-3 rounded-xl font-semibold transition-colors"
+              >
+                Đăng nhập ngay
+              </button>
+              <button
+                onClick={() => router.push("/")}
+                className="w-full bg-surface hover:bg-[#F5EBE1] text-[#6D5D55] py-3 rounded-xl font-semibold transition-colors"
+              >
+                Trở về Trang chủ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Form */}
         <div className="lg:col-span-2">

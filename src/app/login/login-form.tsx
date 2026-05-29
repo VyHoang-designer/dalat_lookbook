@@ -145,7 +145,7 @@ export default function LoginForm({
         {/* Footer */}
         <p className="text-center text-sm text-muted mt-6">
           Chưa có tài khoản?{" "}
-          <Link href="/register" className="font-semibold text-primary hover:underline">
+          <Link href={redirectTo && redirectTo !== "/" ? `/register?redirect=${encodeURIComponent(redirectTo)}` : "/register"} className="font-semibold text-primary hover:underline">
             Đăng ký ngay
           </Link>
         </p>
