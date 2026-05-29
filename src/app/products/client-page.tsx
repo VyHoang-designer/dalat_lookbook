@@ -19,14 +19,16 @@ interface Category {
 export default function ProductsClient({ 
   initialProducts, 
   categories, 
-  activeStyle 
+  activeStyle,
+  initialSearch = "",
 }: { 
   initialProducts: Product[]; 
   categories: Category[]; 
   activeStyle: string; 
+  initialSearch?: string;
 }) {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [sortBy, setSortBy] = useState("newest");
 
   // Client-side filtering

@@ -5,10 +5,11 @@ import ProductsClient from "./client-page";
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ style?: string }>;
+  searchParams: Promise<{ style?: string; search?: string }>;
 }) {
   const params = await searchParams;
   const activeStyle = params.style || "";
+  const activeSearch = params.search || "";
 
   // Server-side fetch
   const products = await getProducts(activeStyle ? { categorySlug: activeStyle } : undefined);
@@ -31,6 +32,7 @@ export default async function ProductsPage({
       initialProducts={products}
       categories={categories}
       activeStyle={activeStyle}
+      initialSearch={activeSearch}
     />
   );
 }

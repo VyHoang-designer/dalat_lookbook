@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import { formatPrice } from "@/lib/utils";
 import {
   Menu,
   X,
@@ -59,6 +61,50 @@ export function Header() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Fetch suggestions
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (!searchQuery.trim()) {
+        setSuggestions([]);
+        return;
+      }
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("products")
+        .select("id, name, slug, thumbnail_url, price_per_day")
+        .ilike("name", `%${searchQuery}%`)
+        .limit(5);
+      
+      setSuggestions(data || []);
+    };
+
+    const debounceTimer = setTimeout(fetchSuggestions, 300);
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setShowSuggestions(false);
+      setSearchOpen(false);
+      router.push(`/products?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   const isAdmin = user?.role === "admin";
 
@@ -100,20 +146,70 @@ export function Header() {
             </Link>
 
             {/* Desktop Search */}
-            <div className="hidden lg:flex flex-1 max-w-md mx-8">
-              <div className="relative w-full">
+            <div className="hidden lg:flex flex-1 max-w-md mx-8" ref={searchRef}>
+              <form onSubmit={handleSearchSubmit} className="relative w-full">
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setShowSuggestions(true);
+                  }}
+                  onFocus={() => setShowSuggestions(true)}
                   placeholder="Tìm trang phục, style, outfit..."
                   className="w-full pl-4 pr-12 py-2.5 text-sm border-2 border-border rounded-full bg-surface/50 focus:bg-white focus:border-primary/50 focus:outline-none transition-all placeholder:text-muted"
                   suppressHydrationWarning
                 />
-                <button className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 bg-primary rounded-full flex items-center justify-center hover:bg-primary-dark transition-colors">
+                <button type="submit" className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 bg-primary rounded-full flex items-center justify-center hover:bg-primary-dark transition-colors">
                   <Search className="w-3.5 h-3.5 text-white" />
                 </button>
-              </div>
+
+                {/* Suggestions Dropdown */}
+                {showSuggestions && searchQuery.trim() !== "" && (
+                  <div className="absolute top-full mt-2 w-full bg-white rounded-xl shadow-xl border border-border/50 overflow-hidden animate-slide-down z-50">
+                    {suggestions.length > 0 ? (
+                      <div className="py-2">
+                        <div className="px-4 py-2 text-xs font-semibold text-muted uppercase tracking-wider bg-surface/30">
+                          Sản phẩm gợi ý
+                        </div>
+                        {suggestions.map((item) => (
+                          <Link
+                            key={item.id}
+                            href={`/products/${item.slug}`}
+                            onClick={() => {
+                              setShowSuggestions(false);
+                              setSearchQuery("");
+                            }}
+                            className="flex items-center gap-3 px-4 py-2 hover:bg-surface transition-colors"
+                          >
+                            <div className="w-10 h-10 rounded-lg bg-surface flex items-center justify-center overflow-hidden shrink-0 relative">
+                              {item.thumbnail_url ? (
+                                <Image src={item.thumbnail_url} alt={item.name} fill className="object-cover" />
+                              ) : (
+                                <span className="text-xl">👗</span>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-sm font-medium text-foreground truncate">{item.name}</h4>
+                              <p className="text-xs font-bold text-primary">{formatPrice(item.price_per_day)}/ngày</p>
+                            </div>
+                          </Link>
+                        ))}
+                        <button
+                          type="submit"
+                          className="w-full text-center py-2.5 text-xs font-medium text-primary hover:bg-primary/5 transition-colors border-t border-border/50 mt-1"
+                        >
+                          Xem tất cả kết quả cho "{searchQuery}"
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="p-4 text-center text-sm text-muted">
+                        Không tìm thấy sản phẩm nào
+                      </div>
+                    )}
+                  </div>
+                )}
+              </form>
             </div>
 
             {/* Desktop Right Actions */}
